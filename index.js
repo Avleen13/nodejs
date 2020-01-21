@@ -7,113 +7,32 @@
 
 //import express into our file
 const express = require("express");
+const exphbs  = require('express-handlebars');
 
 
 //create express app object
 const app = express();
+var hbs = exphbs.create({ /* config */ });
 
+app.engine('handlebars', hbs.engine);
+app.set('view engine', 'handlebars');
 
-const products = 
-[
-    {
-        title  : "Iphone",
-        price : 1500
-    }
-    ,
-    {
-        title: "Airpods",
-        price : 250
-
-    }
-    ,
-    {
-        title : "Charger",
-        price : 150
-    }
-    
-]
-
-const htmlTemplate = section => `
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>${section.title}</title>
-</head>
-<body>
-    ${section.html}
-</body>
-</html>
-`
-
-const getProductsAsUl = () => {
-    let ulString = '';
-    products.forEach(prod => {
-        ulString += `<ul> Product
-                        <li>${prod.title}</li>
-                        <li>${prod.price}</li>
-                    </ul>
-                    `
-    });
-
-    return ulString;
-}
 
 app.get("/",(req,res)=>{
-    
-    let htmlPage =
-    `
-        <!DOCTYPE html>
-        <html>
-            <head>
-                <title>About Us </title>
-                <meta charset="UTF-8">
-            </head>
-            <body>
-                <h2> Home page </h2>
-                <p>
-                    Home
-                </p>
-            </body>
-        </html>
-    `
+ res.render("index");
+});
 
-    res.send(htmlPage);
+
+app.get("/products",(req,res)=>{
+    res.render("products")
 
 });
 
 
-app.get("/about",(req,res)=>{
 
-
-    let htmlPage =
-    `
-        <!DOCTYPE html>
-        <html>
-            <head>
-                <title>About Us </title>
-                <meta charset="UTF-8">
-            </head>
-            <body>
-                <h2> About Us page </h2>
-                <p>
-                    Testing
-                </p>
-            </body>
-        </html>
-    `
-    res.send(htmlPage);
+app.get("/contactus",(req,res)=>{ 
+    res.render("contactus");
 });
-
-
-
-app.get("/product",(req,res)=>{ 
-    
-    const HTMLPage = htmlTemplate({ title: 'Products', html: getProductsAsUl()});
-    res.send(HTMLPage);
-})
 
 
 
